@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMDb Search</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="index.js" defer></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="header">
+        <div id="logoPeli">
+            <img id="logo" src="./logoPelis.png" alt="logo">
+        </div>
+        <div id="controls">
+            <div id="category-buttons">
+                <button class="category-btn selected" data-type="movie">Films</button>
+                <button class="category-btn" data-type="series">Series</button>
+                <button class="category-btn" data-type="">All</button>
+            </div>
+            <input type="text" id="cajaTexto" placeholder="Search">
+        </div>
+    </div>
+    
+    
+    <h2 id="numeroDeResultados"></h2>
+    <div id="lista"></div>
+    <div id="info"></div>
+    
+    <div id="loadingSpinner" style="display: none;">
+        <img src="./recarga.webp" alt="Cargando...">
+    </div>
+
+</body>
+</html>
+
