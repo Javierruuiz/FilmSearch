@@ -25,7 +25,7 @@ let peliABuscar = "";
 let cargaPaginas = 1;
 let peticion = false;
 const imagenPorDefecto = './logoPelis.png';
-let peliculasGuardadas = [];
+let peliculasGuardadas = []; 
 
 function mostrarSpinner() {
     document.getElementById("loadingSpinner").style.display = "block";
@@ -46,7 +46,7 @@ function peticionAJAXmoderna() {
     peticion = true;
     mostrarSpinner();
 
-    const url = `http://www.omdbapi.com/?apikey=9fe0718d&s=${peliABuscar}&type=${tipoSeleccionado}`;
+    const url = `https://www.omdbapi.com/?apikey=9fe0718d&s=${peliABuscar}&type=${tipoSeleccionado}`;
 
     fetch(url, { method: "GET" })
         .then((res) => res.json())
@@ -94,7 +94,7 @@ function peticionAJAXmoderna() {
 function cargaPelis() {
     const tipoSeleccionado = document.querySelector(".category-btn.selected").getAttribute("data-type");
 
-    const url = `http://www.omdbapi.com/?apikey=9fe0718d&s=${peliABuscar}&type=${tipoSeleccionado}&page=${++cargaPaginas}`;
+    const url = `https://www.omdbapi.com/?apikey=9fe0718d&s=${peliABuscar}&type=${tipoSeleccionado}&page=${++cargaPaginas}`;
 
     mostrarSpinner();
 
@@ -132,11 +132,11 @@ function cargaPelis() {
 }
 
 function mostrarDetalles(imdbID) {
-    fetch(`http://www.omdbapi.com/?apikey=9fe0718d&i=${imdbID}`, { method: "GET" })
+    fetch(`https://www.omdbapi.com/?apikey=9fe0718d&i=${imdbID}`, { method: "GET" })
         .then((res) => res.json())
         .then((pelicula) => {
             const modal = document.getElementById("info");
-            modal.innerHTML = "";
+            modal.innerHTML = ""; 
             const cerrarBtn = document.createElement("button");
             cerrarBtn.textContent = "Cerrar";
             cerrarBtn.id = "cerrarModal";
@@ -175,7 +175,7 @@ function mostrarDetalles(imdbID) {
             if (pelicula.Poster !== "N/A" && pelicula.Poster !== "") {
                 imagen.src = pelicula.Poster;
             } else {
-                imagen.src = "logoPelis.png";
+                imagen.src = "logoPelis.png"; 
             }
             imagen.alt = pelicula.Title;
 
@@ -213,134 +213,3 @@ function autoScroll() {
     }
 }
 
-function crearBotonInforme(peliculas, ordenacion, modoordenacion) {
-    if (document.getElementById("crearInformeBtn")) {
-        return;
-    }
-
-    var btn = document.createElement("button");
-    btn.id = "crearInformeBtn";
-    btn.className = "filter-btn";
-    btn.innerText = "Crear Informe";
-
-    btn.addEventListener("click", function() {
-        generarInforme(peliculas, ordenacion, modoordenacion);
-        btn.parentNode.removeChild(btn);
-    });
-
-    var filterList = document.querySelector(".filter-list");
-    var li = document.createElement("li");
-    li.appendChild(btn);
-    filterList.appendChild(li);
-}
-
-function generarInforme(peliculas, ordenacion, modoordenacion) {
-    // Resto del código que me pasaste para el informe
-}
-function generarInforme(peliculas, ordenacion, modoordenacion) {
-    const informeDiv = document.getElementById("informe");
-
-    // Limpiar contenido anterior del informe
-    informeDiv.innerHTML = "";
-
-    // Ordenar las películas si es necesario
-    if (ordenacion && modoordenacion) {
-        peliculas.sort((a, b) => {
-            if (modoordenacion === "asc") {
-                return a[ordenacion] > b[ordenacion] ? 1 : -1;
-            } else {
-                return a[ordenacion] < b[ordenacion] ? 1 : -1;
-            }
-        });
-    }
-
-    // Crear contenido del informe
-    peliculas.forEach((pelicula) => {
-        const peliculaDiv = document.createElement("div");
-        peliculaDiv.className = "informe-item";
-
-        const titulo = document.createElement("h3");
-        titulo.innerText = pelicula.Title;
-
-        const año = document.createElement("p");
-        año.innerHTML = `<strong>Año:</strong> ${pelicula.Year}`;
-
-        const tipo = document.createElement("p");
-        tipo.innerHTML = `<strong>Tipo:</strong> ${pelicula.Type}`;
-
-        const poster = document.createElement("img");
-        poster.src = pelicula.Poster !== "N/A" ? pelicula.Poster : imagenPorDefecto;
-        poster.alt = pelicula.Title;
-
-        peliculaDiv.appendChild(titulo);
-        peliculaDiv.appendChild(año);
-        peliculaDiv.appendChild(tipo);
-        peliculaDiv.appendChild(poster);
-
-        informeDiv.appendChild(peliculaDiv);
-    });
-
-    // Mostrar el informe
-    informeDiv.style.display = "block";
-}
-
-// Función para manejar el cambio de categorías
-function cambiarCategoria(tipo) {
-    document.querySelectorAll(".category-btn").forEach((button) => {
-        button.classList.remove("selected");
-        if (button.getAttribute("data-type") === tipo) {
-            button.classList.add("selected");
-        }
-    });
-
-    peticionAJAXmoderna();
-}
-
-// Función para gestionar errores
-function mostrarError(mensaje) {
-    const errorDiv = document.getElementById("error");
-    errorDiv.innerText = mensaje;
-    errorDiv.style.display = "block";
-
-    setTimeout(() => {
-        errorDiv.style.display = "none";
-    }, 3000);
-}
-
-// Estilo dinámico del botón "Crear Informe"
-function estilizarBotonInforme() {
-    const botonInforme = document.getElementById("crearInformeBtn");
-    if (botonInforme) {
-        botonInforme.style.backgroundColor = "#4CAF50";
-        botonInforme.style.color = "#fff";
-        botonInforme.style.border = "none";
-        botonInforme.style.padding = "10px 20px";
-        botonInforme.style.cursor = "pointer";
-        botonInforme.addEventListener("mouseover", () => {
-            botonInforme.style.backgroundColor = "#45a049";
-        });
-        botonInforme.addEventListener("mouseout", () => {
-            botonInforme.style.backgroundColor = "#4CAF50";
-        });
-    }
-}
-
-// Función para manejar la inicialización de filtros dinámicos
-function inicializarFiltros() {
-    const filtros = document.querySelectorAll(".filter-btn");
-    filtros.forEach((filtro) => {
-        filtro.addEventListener("click", () => {
-            const peliculasFiltradas = peliculasGuardadas.filter((pelicula) => {
-                return pelicula.Type === filtro.getAttribute("data-filter");
-            });
-
-            generarInforme(peliculasFiltradas);
-        });
-    });
-}
-
-// Función para manejar errores globales de la aplicación
-window.addEventListener("error", (event) => {
-    console.error("Error detectado:", event.message);
-    mostrarError("Ocurrió un error. Por favor, inténtalo de nuevo.");
-});
